@@ -2,8 +2,8 @@ import bluepy
 import binascii
 import time
 import threading
-HANDLE_DATA = 0x002a
-devadr = ''   # ESP32 Address
+HANDLE_DATA = 0x0029
+devadr = 'FC:F5:C4:05:AF:7E'   # ESP32 Address
 connected_list = []
 rec_time = {}
 
@@ -15,8 +15,8 @@ class MyDelegate(bluepy.btle.DefaultDelegate):
     def handleNotification(self, cHandle, data):
         global exflag
         global rec_time
-        if cHandle == 0x002a:
-            b="0x002a"
+        if cHandle == 0x0029:
+            b="0x002"
             #do something
         c_data = binascii.b2a_hex(data)
         print( "[worker%s] %s: %s" % (self.worker_id,b, c_data) )
@@ -33,7 +33,7 @@ def worker(adr,worker_id):
         print( "worker%s: connected" % (worker_id) )
         peri.withDelegate(MyDelegate(bluepy.btle.DefaultDelegate,worker_id))
         while True:
-            peri.writeCharacteristic(HANDLE_DATA + 1, b'\x01\x00',True) #要求
+            peri.writeCharacteristic(HANDLE_DATA + 1 , b'\x01\x00',True) #要求
             time.sleep(0.001)
             if  time.time() - rec_time[worker_id] > 5 :
                 break

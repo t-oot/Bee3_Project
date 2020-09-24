@@ -33,8 +33,9 @@ def worker(dev,worker_id):
             latestDataRow = peri.getCharacteristics(uuid=uuid)[0]
             dataRow = latestDataRow.read()
             print("worker%s: data=%s" % (worker_id,dataRow))
-            (seq,DATA1, DATA2, DATA3) = struct.unpack('<Bhhh', dataRow)
+            (seq,DATA1, DATA2, DATA3) = struct.unpack('<Bhhh', dataRow) #受信データのデコード
             print("worker%s: [SEQ%s]decoded DATA1=%s DATA2=%s DATA3=%s" % (worker_id,seq,DATA1, DATA2, DATA3))
+            #TODO: ESP32から見た他のESP32の検出結果を取得する
             time.sleep(1) #1秒ごとにデータ取得要求
         print( "worker%s: disconnected(Close needed)" % (worker_id) )
         peri.disconnect()
@@ -60,6 +61,7 @@ def main():
             devices = scanner.scan(5.0)  #1秒スキャン
             needClose=False
             connected_list_local = {}
+            #TODO: 登録デバイスの取得
             for device in devices:
                 for (adtype, desc, value) in device.getScanData():
                     if device.addrType =="public":
@@ -75,7 +77,7 @@ def main():
                         connected_list_local[device.addr]=1
                         print("[%s] found" % value)
                         if device.addr not in connected_list.keys() :
-                            print("API processing...")
+                            print("API processing...") #入館した
                             payloads = {
                             "mac" : device.addr,
                             "time": int(datetime.now().timestamp()),
@@ -84,7 +86,7 @@ def main():
                             r = requests.get(url_inout, headers=headers, params=payloads)
                             print("API processed RESULT=%s" % (r.status_code))
                             connected_list[device.addr]=1
-
+                        #TODO: RSSI強度(or距離)の送信
                         t = threading.Thread(target=worker, args=(device,counter))
                         t.start()
                         time.sleep(0.4) #次の接続処理まで1秒待機
@@ -92,7 +94,7 @@ def main():
             #退館チェック
             for d in list(connected_list.keys())[:]:
                 if d not in connected_list_local.keys() :
-                    print("API processing...")
+                    print("API processing...") #退館した
                     payloads = {
                     "mac" : device.addr,
                     "time": int(datetime.now().timestamp()),

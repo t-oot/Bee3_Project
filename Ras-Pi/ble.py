@@ -10,7 +10,7 @@ from datetime import datetime
 ##API
 url_inout = "http://api.bee3.tokyo/inout"
 headers = {
-	"auth" : "LWwgrDhtPnwjhYw3YB7"
+	"auth" : "LWwgrDhtPnwjhYw3YB7E"
 }
 #####
 
@@ -42,7 +42,7 @@ def worker(dev,worker_id):
     except Exception as e:
         print("worker%s error:%s"%(worker_id,e))
         print( "worker%s: disconnected" % (worker_id) )
-        connected_list.pop(dev.addr)
+        #connected_list.pop(dev.addr)
 
 def main():
     global devadr
@@ -57,8 +57,8 @@ def main():
         try:
             print("search ESP32")
             needClose=True
-            time.sleep(3)
-            devices = scanner.scan(5.0)  #1秒スキャン
+            time.sleep(2)
+            devices = scanner.scan(1.0)  #1秒スキャン
             needClose=False
             connected_list_local = {}
             #TODO: 登録デバイスの取得
@@ -91,12 +91,13 @@ def main():
                         t.start()
                         time.sleep(0.4) #次の接続処理まで1秒待機
                         counter+=1
+            print("Scan end")
             #退館チェック
             for d in list(connected_list.keys())[:]:
                 if d not in connected_list_local.keys() :
                     print("API processing...") #退館した
                     payloads = {
-                    "mac" : device.addr,
+                    "mac" : d,
                     "time": int(datetime.now().timestamp()),
                     "status": "exit"
                     }

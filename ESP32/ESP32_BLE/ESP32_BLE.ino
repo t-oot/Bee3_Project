@@ -3,6 +3,8 @@
 #include <BLEServer.h>
 #include <esp_gatts_api.h>
 #include <Wire.h>
+#include <Adafruit_MLX90614.h> //温度のやつ
+#include <BLEClient.h> //rssiの取得
 
 
 // See the following for generating UUIDs:
@@ -10,6 +12,8 @@
 
 #define SENSOR_UUID     "b0c8be70-6d46-11e8-adc0-fa7ae01bbebc"
 #define LATESTDATA_UUID "b0c8c0fa-6d46-11e8-adc0-fa7ae01bbebc"
+
+Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 BLEScan* pBLEScan;
 
@@ -52,7 +56,7 @@ class dataCb: public BLECharacteristicCallbacks {
       Serial.println("load");
       //// 送りたいデータ(とりあえず3つ)
       //// TODO:ここにセンサデータを代入する
-      uint16_t DATA1 = 10;
+      uint16_t DATA1 = mlx.readObjectTempC();
       uint16_t DATA2 = 11;
       uint16_t DATA3 = 12;
       ///
@@ -110,6 +114,9 @@ void setup() {
   pBLEScan->setInterval(100);
   pBLEScan->setWindow(99);  // less or equal setInterval value
 
+  //温度センサ
+  Serial.println("Adafruit MLX90614 test"); 
+  mlx.begin();
 }
 void loop() {
   delay(5000);
@@ -118,4 +125,5 @@ void loop() {
   Serial.println(foundDevices.getCount());
   Serial.println("Scan done!");
   pBLEScan->clearResults();
+  Serial.print("温度は "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");//温度センサ
 }

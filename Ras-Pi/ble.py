@@ -1,78 +1,77 @@
+#30秒ごとにスキャン (スキャン時は全デバイス切断する)
+#同時接続対応
 import bluepy
 import binascii
 import time
 import threading
-HANDLE_DATA = 0x0029
-devadr = 'FC:F5:C4:05:AF:7E'   # ESP32 Address
-connected_list = []
+connected_list = {}
 rec_time = {}
-
-class MyDelegate(bluepy.btle.DefaultDelegate):
-    def __init__(self, params,worker_id):
-        bluepy.btle.DefaultDelegate.__init__(self)
-        self.worker_id = worker_id
-
-    def handleNotification(self, cHandle, data):
-        global exflag
-        global rec_time
-        if cHandle == 0x0029:
-            b="0x002"
-            #do something
-        c_data = binascii.b2a_hex(data)
-        print( "[worker%s] %s: %s" % (self.worker_id,b, c_data) )
-        rec_time[self.worker_id] = time.time()
-
-def worker(adr,worker_id):
-    global devadr
-    global rec_time
+needClose=False
+uuid="b0c8c0fa-6d46-11e8-adc0-fa7ae01bbebc" #必要に応じて変更する
+def worker(dev,worker_id):
     global connected_list
+    global uuid
     try:
         print( "worker%s: connecting" % (worker_id) )
         peri = bluepy.btle.Peripheral()
-        peri.connect(adr, bluepy.btle.ADDR_TYPE_PUBLIC)
+        peri.connect(dev,"public")
         print( "worker%s: connected" % (worker_id) )
-        peri.withDelegate(MyDelegate(bluepy.btle.DefaultDelegate,worker_id))
+        #peri.withDelegate(MyDelegate(bluepy.btle.DefaultDelegate,worker_id))
         while True:
-            peri.writeCharacteristic(HANDLE_DATA + 1 , b'\x01\x00',True) #要求
-            time.sleep(0.001)
-            if  time.time() - rec_time[worker_id] > 5 :
+            if needClose == True:
                 break
+            latestDataRow = peri.getCharacteristics(uuid=uuid)[0]
+            dataRow = latestDataRow.read()
+            print("worker%s: data=%s" % (worker_id,dataRow))
+            time.sleep(1) #1秒ごとにデータ取得要求
+        print( "worker%s: disconnected(Close needed)" % (worker_id) )
         peri.disconnect()
+        connected_list.pop(dev.addr)
     except Exception as e:
-        print(e)
+        print("worker%s error:%s"%(worker_id,e))
         print( "worker%s: disconnected" % (worker_id) )
-        connected_list.remove(devadr)
-        devadr = ''
+        connected_list.pop(dev.addr)
 
 def main():
     global devadr
-    global rec_time
     global connected_list
+    global needClose
     counter=0
+    scanner = bluepy.btle.Scanner()
     while True :
-        if devadr != '' :
-            time.sleep(1)
-            continue
-        print("search ESP32")
-        scanner = bluepy.btle.Scanner(0)
-        devices = scanner.scan(1)  #1秒スキャン
-        for device in devices:
-            if connected_list.count(device.addr) >0 :
-                continue
-            for (adtype, desc, value) in device.getScanData():
-                if value == "ESP32" :
-                    print('======================================================')
-                    print('address : %s' % device.addr)
-                    print('addrType: %s' % device.addrType)
-                    print('RSSI    : %s' % device.rssi)
-                    devadr = device.addr
-                    connected_list.append(device.addr)
-                    print("found")
-                    rec_time[counter] = time.time()
-                    t = threading.Thread(target=worker, args=(device.addr,counter))
-                    t.start()
-                    time.sleep(2)
-                    counter+=1
+        #if devadr != '' :
+        #    time.sleep(1)
+        #    continue
+        try:
+            print("search ESP32")
+            needClose=True
+            time.sleep(3)
+            devices = scanner.scan(5.0)  #1秒スキャン
+            needClose=False
+            for device in devices:
+                for (adtype, desc, value) in device.getScanData():
+                    if device.addrType =="public":
+                        print('======================================================')
+                        print('address : %s' % device.addr)
+                        print('addrType: %s' % device.addrType)
+                        print('RSSI    : %s' % device.rssi)
+                        print('desc    : %s' % desc)
+                        print('value    : %s' % value)
+                        if device.addr in connected_list.keys() : #接続済みの場合はスキップ
+                            print("(connected)")
+                            continue
+                        connected_list[device.addr]=1
+                        print("[%s] found" % value)
+                        t = threading.Thread(target=worker, args=(device,counter))
+                        t.start()
+                        time.sleep(1) #次の接続処理まで1秒待機
+                        counter+=1
+        except Exception as e:
+            print(e)
+            scan=False
+            print( "scanner error")
+            time.sleep(5)
+        time.sleep(30) #スキャン間隔
 
 
 if __name__ == "__main__":

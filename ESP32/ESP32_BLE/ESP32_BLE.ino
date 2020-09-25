@@ -56,8 +56,8 @@ class dataCb: public BLECharacteristicCallbacks {
       Serial.println("load");
       //// 送りたいデータ(とりあえず3つ)
       //// TODO:ここにセンサデータを代入する
-      uint16_t DATA1 = mlx.readObjectTempC();
-      uint16_t DATA2 = 11;
+      uint16_t DATA1 = mlx.readObjectTempC();//体温
+      uint16_t DATA2 = mlx.readAmbientTempC();//気温
       uint16_t DATA3 = 12;
       ///
       memset(buf, 0, sizeof buf);               // バッファーを0クリア

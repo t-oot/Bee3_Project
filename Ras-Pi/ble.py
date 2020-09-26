@@ -93,7 +93,7 @@ def main():
 							print("API processing...") #入館した
 							payloads = {
 							"mac" : device.addr,
-							"time": int(datetime.now().timestamp()),
+							#"time": int(datetime.now().timestamp()),
 							"status": "enter"
 							}
 							r = requests.get(url_inout, headers=headers, params=payloads)

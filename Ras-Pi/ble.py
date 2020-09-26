@@ -26,6 +26,18 @@ def temp_send(mac,taion, situon):
     return r.status_code
 
 
+def rssi_send(rssi_value):
+    global headers
+    url = "http://api.bee3.tokyo/temp/register"
+    payloads = {
+        "rssi" : rssi_value
+    }
+    r = requests.get(url, headers=headers, params=payloads)
+    return r.status_code
+
+
+
+
 connected_list = {}
 rec_time = {}
 needClose=False
@@ -60,6 +72,8 @@ def worker(dev,worker_id):
                 if macadr=="00:00:00:00:00:00" :
                     break
                 print("worker%s: %s RSSI=-%s" % (worker_id,macadr,dataRow[offset+6]))
+                if macadr=="fc:f5:c4:05:b1:ee" or "fc:f5:c4:05:af:7e":
+                    rssi_send(rssi_value=dataRow[offset+6])
             time.sleep(1) #1秒ごとにデータ取得要求
         print( "worker%s: disconnected(Close needed)" % (worker_id) )
         peri.disconnect()

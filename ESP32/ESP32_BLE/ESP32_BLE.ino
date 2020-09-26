@@ -83,7 +83,25 @@ class dataCb2: public BLECharacteristicCallbacks {
       uint8_t buf[7*30];
       Serial.println("load2");
       for(int i = 0; i < 30;i++) {
-        
+        int offset = i * 7;
+       String mac = near1[i];
+        mac.replace(":", "");
+       byte macByte[4];
+        unsigned long number = strtoul( mac.c_str(), nullptr, 16);
+
+  for(int j=6; j>=0; j--)    // start with lowest byte of number
+  {
+    macByte[j] = number & 0xFF;  // or: = byte( number);
+    number >>= 8;            // get next byte into position
+  }
+  
+      buf[offset+0] = (uint8_t)(macByte[0]);
+        buf[offset+1] = (uint8_t)(macByte[1]);
+          buf[offset+2] = (uint8_t)(macByte[2]);
+            buf[offset+3] = (uint8_t)(macByte[3]);
+              buf[offset+4] = (uint8_t)(macByte[4]);
+                buf[offset+5] = (uint8_t)(macByte[5]);
+                   buf[offset+6] = (uint8_t)(near2[i]*-1);
       }
       pChar->setValue(buf, sizeof buf);         // データを書き込み
     }
@@ -119,7 +137,12 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Starting BLE work!");
 
-  BLEDevice::init("ESP32_No1");                  // デバイスを初期化--------------------------------ここの名前をデバイスごとに変更------
+  for(int i = 0; i < 30;i++) {
+  near1[i] = "00:00:00:00:00:00"; //mac
+near2[i] = 0;  //rssi
+  }
+  
+  BLEDevice::init("ESP32");                  // デバイスを初期化
   BLEServer *pServer = BLEDevice::createServer();    // サーバーを生成
   pServer->setCallbacks(new MyServerCallbacks());    // コールバック関数を設定
 
@@ -159,7 +182,7 @@ BLEService *pService2 = pServer->createService(SENSOR_UUID2);
 void loop() {
   delay(5000);
   for(int i = 0; i < 30;i++) {
-  near1[i] = ""; //mac
+  near1[i] = "00:00:00:00:00:00"; //mac
 near2[i] = 0;  //rssi
   }
   near_count=0;

@@ -1,4 +1,4 @@
-#30秒ごとにスキャン (スキャン時は全デバイス切断する)
+#30秒ごとにスキャン (スキャン時は全デバイス切断する)hh
 #同時接続対応
 import bluepy
 import binascii
@@ -26,10 +26,12 @@ def temp_send(mac,taion, situon):
     return r.status_code
 
 
-def rssi_send(rssi_value):
+def rssi_send(dev_value,mac_value,rssi_value):
     global headers
-    url = "http://api.bee3.tokyo/temp/register"
+    url = "http://api.bee3.tokyo/rssi/register"
     payloads = {
+        "mac1" : dev_value,
+        "mac2" : mac_value,
         "rssi" : rssi_value
     }
     r = requests.get(url, headers=headers, params=payloads)
@@ -61,7 +63,7 @@ def worker(dev,worker_id):
             print("worker%s: data=%s" % (worker_id,dataRow))
             (seq,DATA1, DATA2, DATA3) = struct.unpack('<Bhhh', dataRow) #受信データのデコード
             print("worker%s: [SEQ%s]decoded DATA1=%s DATA2=%s DATA3=%s" % (worker_id,seq,DATA1, DATA2, DATA3))
-            temp_send(mac=dev.addr ,taion=DATA2, situon=DATA1)
+            print(temp_send(mac=dev.addr ,taion=DATA2, situon=DATA1))
             #TODO: ESP32から見た他のESP32の検出結果を取得する
             latestDataRow = peri.getCharacteristics(uuid=uuid2)[0]
             dataRow = latestDataRow.read()
@@ -73,7 +75,7 @@ def worker(dev,worker_id):
                     break
                 print("worker%s: %s RSSI=-%s" % (worker_id,macadr,dataRow[offset+6]))
                 if macadr=="fc:f5:c4:05:b1:ee" or "fc:f5:c4:05:af:7e":
-                    rssi_send(rssi_value=dataRow[offset+6])
+                    print(rssi_send(dev_value=dev.addr,mac_value=macadr,rssi_value=dataRow[offset+6]))
             time.sleep(1) #1秒ごとにデータ取得要求
         print( "worker%s: disconnected(Close needed)" % (worker_id) )
         peri.disconnect()

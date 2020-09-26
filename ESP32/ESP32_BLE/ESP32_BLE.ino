@@ -121,7 +121,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println("Starting BLE work!");
 
-  BLEDevice::init("ESP32");                  // デバイスを初期化
+  BLEDevice::init("ESP32_No1");                  // デバイスを初期化--------------------------------ここの名前をデバイスごとに変更------
   BLEServer *pServer = BLEDevice::createServer();    // サーバーを生成
   pServer->setCallbacks(new MyServerCallbacks());    // コールバック関数を設定
 

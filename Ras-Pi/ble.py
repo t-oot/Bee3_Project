@@ -58,7 +58,7 @@ def main():
             print("search ESP32")
             needClose=True
             time.sleep(2)
-            devices = scanner.scan(1.0)  #1秒スキャン
+            devices = scanner.scan(3.0)  #1秒スキャン
             needClose=False
             connected_list_local = {}
             #TODO: 登録デバイスの取得

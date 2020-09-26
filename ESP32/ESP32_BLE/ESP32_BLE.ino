@@ -13,6 +13,9 @@
 #define SENSOR_UUID     "b0c8be70-6d46-11e8-adc0-fa7ae01bbebc"
 #define LATESTDATA_UUID "b0c8c0fa-6d46-11e8-adc0-fa7ae01bbebc"
 
+#define SENSOR_UUID2     "b1c8be70-6d46-11e8-adc0-fa7ae01bbebc"
+#define LATESTDATA_UUID2 "b1c8c0fa-6d46-11e8-adc0-fa7ae01bbebc"
+
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 BLEScan* pBLEScan;
@@ -50,7 +53,30 @@ class MyServerCallbacks: public BLEServerCallbacks {
 
 uint8_t seq = 0;
 
+//温度を送る
 class dataCb: public BLECharacteristicCallbacks {
+    void onRead(BLECharacteristic *pChar) {
+      uint8_t buf[7];
+      Serial.println("load");
+      //// 送りたいデータ(とりあえず3つ)
+      //// TODO:ここにセンサデータを代入する
+      uint16_t DATA1 = mlx.readObjectTempC()*100;//体温
+      uint16_t DATA2 = mlx.readAmbientTempC()*100;//気温
+      uint16_t DATA3 = 12;
+      ///
+      memset(buf, 0, sizeof buf);               // バッファーを0クリア
+      buf[0] = seq++;                           // シーケンス番号をバッファーにセット
+      buf[1] = (uint8_t)(DATA1 & 0xff);
+      buf[2] = (uint8_t)((DATA1 >> 8) & 0xff);
+      buf[3] = (uint8_t)(DATA2 & 0xff);
+      buf[4] = (uint8_t)((DATA2 >> 8) & 0xff);
+      buf[5] = (uint8_t)(DATA3 & 0xff);
+      buf[6] = (uint8_t)((DATA3 >> 8) & 0xff);
+      pChar->setValue(buf, sizeof buf);         // データを書き込み
+    }
+};
+//RSSIの一覧を送る
+class dataCb2: public BLECharacteristicCallbacks {
     void onRead(BLECharacteristic *pChar) {
       uint8_t buf[7];
       Serial.println("load");
@@ -71,10 +97,19 @@ class dataCb: public BLECharacteristicCallbacks {
       pChar->setValue(buf, sizeof buf);         // データを書き込み
     }
 };
+
 class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
     void onResult(BLEAdvertisedDevice advertisedDevice) {
       //TODO これらのデータをどこか変数において、要求があったときにデバイスアドレスとRSSIを送信できるようにする
-      Serial.printf("Advertised Device: %s \n", advertisedDevice.toString().c_str());
+      String info = advertisedDevice.toString().c_str();
+      int idx = info.indexOf("Rssi: ");
+      if(idx == -1) {
+      Serial.printf("No RSSi");   
+      }else{
+       Serial.println(idx);
+      info  =info.substring(idx)+5;
+      Serial.printf("Advertised Device: %s ; RSSI=%s\n", advertisedDevice.toString().c_str(),info.c_str());
+      }
     }
 };
 
@@ -92,12 +127,17 @@ void setup() {
 
   BLEService *pService = pServer->createService(SENSOR_UUID);  // サービスを生成
   // キャラクタリスティクスを生成
-  pService->createCharacteristic(LATESTDATA_UUID, BLECharacteristic::PROPERTY_READ)
+  pService->createCharacteristic(LATESTDATA_UUID2, BLECharacteristic::PROPERTY_READ)
   ->setCallbacks(new dataCb());                  // コールバック関数を設定
 
   pService->start();                                 // サービスを起動
 
   //TODO　もう1つサービスを作る　デバイスアドレスとRSSIを送るためのサービス
+BLEService *pService2 = pServer->createService(SENSOR_UUID2); 
+  pService2->createCharacteristic(LATESTDATA_UUID2, BLECharacteristic::PROPERTY_READ)
+  ->setCallbacks(new dataCb());                  // コールバック関数を設定
+
+  pService2->start();    
   
   BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
   pAdvertising->addServiceUUID(SENSOR_UUID);

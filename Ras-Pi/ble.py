@@ -89,6 +89,7 @@ def main():
                         #TODO: RSSI強度(or距離)の送信
                         t = threading.Thread(target=worker, args=(device,counter))
                         t.start()
+                        print("connected ==>%s" %(counter))
                         time.sleep(0.4) #次の接続処理まで1秒待機
                         counter+=1
             print("Scan end")

@@ -1,0 +1,359 @@
+pi@wata:~/Documents/study/Bee3_Project-master/Ras-Pi $ sudo python3 ble.py
+search ESP32
+Scan end
+search ESP32
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -71
+desc    : Flags
+value    : 06
+[06] found
+API processing...
+API processed RESULT=200
+worker0: connecting
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -71
+desc    : Complete 128b Services
+value    : b0c8be70-6d46-11e8-adc0-fa7ae01bbebc
+(connected)
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -71
+desc    : 0x12
+value    : 07004000
+(connected)
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -71
+desc    : Complete Local Name
+value    : ESP32
+(connected)
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -71
+desc    : Tx Power
+value    : 03
+(connected)
+Scan end
+worker0 error:Failed to connect to peripheral fc:f5:c4:05:af:7e, addr type: public
+worker0: disconnected
+search ESP32
+Scan end
+API processing...
+API processed RESULT=200
+search ESP32
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -60
+desc    : Flags
+value    : 06
+[06] found
+API processing...
+API processed RESULT=200
+worker1: connecting
+worker1: connected
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -60
+desc    : Complete 128b Services
+value    : b0c8be70-6d46-11e8-adc0-fa7ae01bbebc
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -60
+desc    : 0x12
+value    : 07004000
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -60
+desc    : Complete Local Name
+value    : ESP32
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -60
+desc    : Tx Power
+value    : 03
+(connected)
+Scan end
+worker1: data=b'\x00\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ0]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x01\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ1]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x02\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ2]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x03\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ3]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x04\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ4]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x05\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ5]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x06\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ6]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x07\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ7]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x08\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ8]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\t\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ9]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\n\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ10]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x0b\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ11]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x0c\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ12]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\r\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ13]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x0e\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ14]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x0f\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ15]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x10\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ16]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x11\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ17]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x12\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ18]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x13\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ19]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x14\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ20]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x15\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ21]decoded DATA1=1037 DATA2=11 DATA3=12
+worker1: data=b'\x16\r\x04\x0b\x00\x0c\x00'
+worker1: [SEQ22]decoded DATA1=1037 DATA2=11 DATA3=12
+search ESP32
+worker1: disconnected(Close needed)
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -76
+desc    : Flags
+value    : 06
+[06] found
+API processing...
+API processed RESULT=200
+worker2: connecting
+worker2: connected
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -76
+desc    : Complete 128b Services
+value    : b0c8be70-6d46-11e8-adc0-fa7ae01bbebc
+(connected)
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -76
+desc    : 0x12
+value    : 07004000
+(connected)
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -76
+desc    : Complete Local Name
+value    : ESP32
+(connected)
+======================================================
+address : fc:f5:c4:05:af:7e
+addrType: public
+RSSI    : -76
+desc    : Tx Power
+value    : 03
+(connected)
+Scan end
+API processing...
+API processed RESULT=200
+worker2: data=b'\x00\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ0]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x01\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ1]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x02\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ2]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x03\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ3]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x04\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ4]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x05\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ5]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x06\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ6]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x07\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ7]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x08\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ8]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\t\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ9]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\n\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ10]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x0b\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ11]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x0c\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ12]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\r\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ13]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x0e\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ14]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x0f\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ15]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x10\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ16]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x11\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ17]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x12\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ18]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x13\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ19]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x14\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ20]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: data=b'\x15\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ21]decoded DATA1=0 DATA2=11 DATA3=12
+search ESP32
+worker2: data=b'\x16\x00\x00\x0b\x00\x0c\x00'
+worker2: [SEQ22]decoded DATA1=0 DATA2=11 DATA3=12
+worker2: disconnected(Close needed)
+Scan end
+API processing...
+API processed RESULT=200
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : Flags
+value    : 06
+[06] found
+API processing...
+API processed RESULT=200
+worker3: connecting
+worker3: connected
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : Complete 128b Services
+value    : f0c8be70-6d46-11e8-adc0-fa7ae01bbebc
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : 0x12
+value    : 07004000
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : Complete Local Name
+value    : ESP32
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : Tx Power
+value    : 03
+(connected)
+Scan end
+worker3 error:Device disconnected
+worker3: disconnected
+search ESP32
+Scan end
+API processing...
+API processed RESULT=200
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+Scan end
+^Z
+[12]+  停止                  sudo python3 ble.py
+pi@wata:~/Documents/study/Bee3_Project-master/Ras-Pi $ sudo python3 ble.py
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : Flags
+value    : 06
+[06] found
+API processing...
+API processed RESULT=200
+worker0: connecting
+worker0: connected
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : Complete 128b Services
+value    : f0c8be70-6d46-11e8-adc0-fa7ae01bbebc
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : 0x12
+value    : 07004000
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : Complete Local Name
+value    : ESP32_No2
+(connected)
+======================================================
+address : fc:f5:c4:05:b1:ee
+addrType: public
+RSSI    : -44
+desc    : Tx Power
+value    : 03
+(connected)
+Scan end
+worker0 error:Bluetooth command failed (code: 10, error: No attribute found within the given range)
+worker0: disconnected
+search ESP32
+Scan end
+API processing...
+API processed RESULT=200
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+Scan end
+search ESP32
+Scan end
+

@@ -98,9 +98,9 @@ def main():
                 if d not in connected_list_local.keys() :
                     print("API processing...") #退館した
                     payloads = {
-                    "mac" : d,
-                    "time": int(datetime.now().timestamp()),
-                    "status": "exit"
+			    "mac" : d,
+			    #"time": int(datetime.now().timestamp()), timeパラメータを省略するとサーバー側に到達した時間が登録される
+			    "status": "exit"
                     }
                     r = requests.get(url_inout, headers=headers, params=payloads)
                     print("API processed RESULT=%s" % (r.status_code))

@@ -9,13 +9,14 @@ import struct
 from datetime import datetime
 ##API
 url_inout = "http://api.bee3.tokyo/inout/register"
-url_temp_register = "http://api.bee3.tokyo/temp/register"
 headers = {
 	"auth" : "LWwgrDhtPnwjhYw3YB7E"
 }
 #####
 
 def temp_send(mac,taion, situon):
+	global headers
+	url = "http://api.bee3.tokyo/temp/register"
 	payloads = {
 		"mac" : mac,
 		"temp1" : taion,

@@ -94,7 +94,8 @@ def main():
 							payloads = {
 							"mac" : device.addr,
 							#"time": int(datetime.now().timestamp()),
-							"status": "enter"
+							"status": "enter",
+							"floor": 1
 							}
 							r = requests.get(url_inout, headers=headers, params=payloads)
 							print("API processed RESULT=%s" % (r.status_code))
@@ -113,7 +114,8 @@ def main():
 					payloads = {
 				"mac" : d,
 				#"time": int(datetime.now().timestamp()), timeパラメータを省略するとサーバー側に到達した時間が登録される
-				"status": "exit"
+				"status": "exit",
+				"floor": 1
 					}
 					r = requests.get(url_inout, headers=headers, params=payloads)
 					print("API processed RESULT=%s" % (r.status_code))

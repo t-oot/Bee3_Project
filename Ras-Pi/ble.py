@@ -9,10 +9,21 @@ import struct
 from datetime import datetime
 ##API
 url_inout = "http://api.bee3.tokyo/inout/register"
+url_temp_register = "http://api.bee3.tokyo/temp/register"
 headers = {
 	"auth" : "LWwgrDhtPnwjhYw3YB7E"
 }
 #####
+
+def temp_send(mac,taion, situon):
+    payloads = {
+        "mac" : mac,
+		"temp1" : taion,
+		"temp2" : situon
+    }
+    r = requests.get(url, headers=headers, params=payloads)
+    return r.status_code
+
 
 connected_list = {}
 rec_time = {}
@@ -35,6 +46,7 @@ def worker(dev,worker_id):
             print("worker%s: data=%s" % (worker_id,dataRow))
             (seq,DATA1, DATA2, DATA3) = struct.unpack('<Bhhh', dataRow) #受信データのデコード
             print("worker%s: [SEQ%s]decoded DATA1=%s DATA2=%s DATA3=%s" % (worker_id,seq,DATA1, DATA2, DATA3))
+	    send_temp(mac=dev.addr ,taion=DATA2, situon=DATA1)
             #TODO: ESP32から見た他のESP32の検出結果を取得する
             time.sleep(1) #1秒ごとにデータ取得要求
         print( "worker%s: disconnected(Close needed)" % (worker_id) )

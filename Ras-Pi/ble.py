@@ -8,7 +8,7 @@ import requests
 import struct
 from datetime import datetime
 ##API
-url_inout = "http://api.bee3.tokyo/inout"
+url_inout = "http://api.bee3.tokyo/inout/register"
 headers = {
 	"auth" : "LWwgrDhtPnwjhYw3YB7E"
 }

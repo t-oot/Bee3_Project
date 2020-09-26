@@ -20,7 +20,9 @@ Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 BLEScan* pBLEScan;
 
-
+String near1[30]; //mac
+int  near2[30];  //rssi
+int near_count=0;
 void bdaDump(esp_bd_addr_t bd) {
   for (int i = 0; i < ESP_BD_ADDR_LEN; i++) {
     Serial.printf("%02x", bd[i]);
@@ -78,22 +80,11 @@ class dataCb: public BLECharacteristicCallbacks {
 //RSSIの一覧を送る
 class dataCb2: public BLECharacteristicCallbacks {
     void onRead(BLECharacteristic *pChar) {
-      uint8_t buf[7];
-      Serial.println("load");
-      //// 送りたいデータ(とりあえず3つ)
-      //// TODO:ここにセンサデータを代入する
-      uint16_t DATA1 = mlx.readObjectTempC();//体温
-      uint16_t DATA2 = mlx.readAmbientTempC();//気温
-      uint16_t DATA3 = 12;
-      ///
-      memset(buf, 0, sizeof buf);               // バッファーを0クリア
-      buf[0] = seq++;                           // シーケンス番号をバッファーにセット
-      buf[1] = (uint8_t)(DATA1 & 0xff);
-      buf[2] = (uint8_t)((DATA1 >> 8) & 0xff);
-      buf[3] = (uint8_t)(DATA2 & 0xff);
-      buf[4] = (uint8_t)((DATA2 >> 8) & 0xff);
-      buf[5] = (uint8_t)(DATA3 & 0xff);
-      buf[6] = (uint8_t)((DATA3 >> 8) & 0xff);
+      uint8_t buf[7*30];
+      Serial.println("load2");
+      for(int i = 0; i < 30;i++) {
+        
+      }
       pChar->setValue(buf, sizeof buf);         // データを書き込み
     }
 };
@@ -103,12 +94,19 @@ class MyAdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks {
       //TODO これらのデータをどこか変数において、要求があったときにデバイスアドレスとRSSIを送信できるようにする
       String info = advertisedDevice.toString().c_str();
       int idx = info.indexOf("Rssi: ");
+       int idx2 = info.indexOf("Address: ")+9;
       if(idx == -1) {
       Serial.printf("No RSSi");   
       }else{
        Serial.println(idx);
+      String mac  =  info.substring(idx2,idx2+17);
       info  =info.substring(idx)+5;
       Serial.printf("Advertised Device: %s ; RSSI=%s\n", advertisedDevice.toString().c_str(),info.c_str());
+      if(near_count <=30) {
+      near1[near_count]=mac;
+       near2[near_count]=atoi(info.c_str())*-1;
+      near_count++;
+      }
       }
     }
 };
@@ -127,7 +125,7 @@ void setup() {
 
   BLEService *pService = pServer->createService(SENSOR_UUID);  // サービスを生成
   // キャラクタリスティクスを生成
-  pService->createCharacteristic(LATESTDATA_UUID2, BLECharacteristic::PROPERTY_READ)
+  pService->createCharacteristic(LATESTDATA_UUID, BLECharacteristic::PROPERTY_READ)
   ->setCallbacks(new dataCb());                  // コールバック関数を設定
 
   pService->start();                                 // サービスを起動
@@ -160,6 +158,11 @@ BLEService *pService2 = pServer->createService(SENSOR_UUID2);
 }
 void loop() {
   delay(5000);
+  for(int i = 0; i < 30;i++) {
+  near1[i] = ""; //mac
+near2[i] = 0;  //rssi
+  }
+  near_count=0;
   BLEScanResults foundDevices = pBLEScan->start(3, false); //3秒スキャン
   Serial.print("Devices found: ");
   Serial.println(foundDevices.getCount());
